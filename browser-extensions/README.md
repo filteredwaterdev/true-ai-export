@@ -4,13 +4,13 @@
 
 This directory is reserved for browser extension implementations
 of the true-ai-export functionality. The console scripts in
-`claude/` are the current working solution. The extensions will
+`claude/v1.2.0/` are the current working solution. The extensions will
 provide the same functionality without requiring the user to open
 a developer console.
 
 If you are a developer who wants to build one of these, everything
 you need is in this repository. Read this file first, then read
-the console scripts in `claude/` — they are the reference
+the console scripts in `claude/v1.2.0/` — they are the reference
 implementation. The core fetch logic is proven, stable, and
 documented. Building an extension is a matter of wrapping that
 logic in the appropriate extension architecture for each platform.
@@ -95,7 +95,7 @@ No external servers are contacted.
 No credentials are stored or transmitted beyond claude.ai.
 
 The output formatting logic for each format is in the
-corresponding script in `claude/`. The extension imports or
+corresponding script in `claude/v1.2.0/`. The extension imports or
 mirrors this logic directly — it does not rewrite it.
 
 ---
@@ -284,7 +284,7 @@ themselves are responsible for solving.
 
 ## Reference Implementation
 
-The console scripts in `claude/` are the authoritative
+The console scripts in `claude/v1.2.0/` are the authoritative
 reference implementation. Any extension that produces
 different output for the same conversation has a bug.
 Test against the console scripts, not against expectations.
