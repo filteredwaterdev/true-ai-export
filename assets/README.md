@@ -70,6 +70,7 @@ Matches the claude.ai interface icon style:
 | `png/export-icon-32.png` | PNG | 32×32 |
 | `png/export-icon-48.png` | PNG | 48×48 |
 | `png/export-icon-64.png` | PNG | 64×64 |
+| `png/export-icon-96.png` | PNG | 96×96 |
 | `png/export-icon-128.png` | PNG | 128×128 |
 | `png/export-icon-256.png` | PNG | 256×256 |
 
