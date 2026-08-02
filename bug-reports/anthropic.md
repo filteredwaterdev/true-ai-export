@@ -79,7 +79,7 @@ discovered until much later. This is a silent data loss vector
 affecting paying users who believe they have saved a complete
 record when they have not.
 
-A particularly clear illustration of this regression: Cmd-F
+A curious illustration of this regression: Cmd-F
 browser search works correctly across the full conversation —
 the browser can find text anywhere in the session regardless
 of scroll position — while Cmd-C copies only the DOM fragment.
