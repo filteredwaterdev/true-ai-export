@@ -92,7 +92,7 @@ convert -background none export-icon.svg \
 
 Note: the 16px PNG was generated from `export-icon-16.svg`
 which uses stroke-width="2" for improved legibility at small
-sizes. The canonical 24×24 PNG and the 256×256 PNG were both
+sizes. The canonical 24×24 PNG, 48x48 PNG, 96x96 PNG, and 256×256 PNG were all
 generated from `export-icon.svg`. All other PNGs were
 generated from their corresponding size-specific SVG files
 using stroke-width="1.5".
