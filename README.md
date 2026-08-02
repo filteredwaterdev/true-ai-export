@@ -1,7 +1,7 @@
 # true-ai-export
 
-This project addresses two distinct things that are broken or missing
-in current AI web interfaces, and both need to be stated clearly. One worked up until a recent regression. The other has never existed in any useful form. 
+This project responds to two distinct things that are broken or missing
+in current AI web interfaces, and both need to be stated clearly. One worked up until a recent regression. The other has not existed in any useful form. 
 
 **The first** is the ability to select any arbitrary portion of a
 conversation — a single sentence, a paragraph, a specific response,
