@@ -209,7 +209,7 @@ The PDF scripts work differently from all other scripts in this
 project. Rather than downloading a file, they open a
 print-optimised document in a new browser tab and trigger the
 print dialog. From there, select your printer or choose
-"Save as PDF" to save locally.
+"Save as PDF" to save locally. You can also then save those pages for more simply formatted serif or sans-serif HTML than the styled output of the specific HTML script. 
 
 Two typeface options are provided:
 
