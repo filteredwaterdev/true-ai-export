@@ -1,6 +1,6 @@
-# Bug Report — Anthropic Support
-# Copy and send to: support@anthropic.com
-# Subject line provided below — copy it exactly
+# Bug Report Template — Anthropic Support
+# If needed, copy and send to: support@anthropic.com
+# Subject line provided below 
 
 ---
 
