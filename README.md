@@ -1,6 +1,6 @@
 # true-ai-export
 
-There are two distinct portability-related things that are broken 
+This project addresses two distinct things that are broken or missing
 in current AI web interfaces, and both need to be stated clearly.
 
 **The first** is the ability to select any arbitrary portion of a
