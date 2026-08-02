@@ -271,7 +271,7 @@ for resolution, and add it to the public roadmap.
 3. Press `Cmd-C` / `Ctrl-C`
 4. Paste into any plain text editor
 
-Expected: Complete conversation transcript
+Expected: Complete conversation transcript. 
 Actual: Fragment — only messages near current scroll position
 — with no reported error or indication the output is incomplete
 
@@ -280,7 +280,7 @@ Actual: Fragment — only messages near current scroll position
 2. File → Save Page As → Save as HTML
 3. Open the saved file
 
-Expected: Complete, usable conversation record
+Expected: Complete, usable conversation record. 
 Actual: Broken, unusable output
 
 **Print to PDF:**
@@ -288,7 +288,7 @@ Actual: Broken, unusable output
 2. File → Print → Save as PDF
 3. Open the PDF
 
-Expected: Complete, usable conversation record
+Expected: Complete, usable conversation record. 
 Actual: Broken, unusable output
 
 ---
