@@ -66,7 +66,7 @@ the browser can find text anywhere in the session — while
 Cmd-C copies only the DOM fragment. The content is accessible
 to the browser's own find function but not to the clipboard.
 
-This has been confirmed on Claude.ai and at least one other
+The regression has been confirmed on Claude.ai and at least one other
 noteworthy AI web interface.
 
 ### This is not a server-side constraint
