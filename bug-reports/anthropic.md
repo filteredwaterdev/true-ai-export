@@ -1,5 +1,5 @@
 # Bug Report Template — Anthropic Support
-# If needed, copy and send to: support@anthropic.com
+# If needed, modify as required and send to: support@anthropic.com
 # Subject line provided below 
 
 ---
