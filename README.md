@@ -188,17 +188,17 @@ detail.
 
 | Script | Version | Status | Output |
 |--------|---------|--------|--------|
-| `claude/export-markdown.js` | Full | ✅ Tested | Markdown `.md` |
-| `claude/export-markdown-clean.js` | Clean | ✅ Tested | Markdown `.md` |
-| `claude/export-plaintext.js` | Full | ✅ Tested | Plain text `.txt` |
-| `claude/export-plaintext-clean.js` | Clean | ✅ Tested | Plain text `.txt` |
-| `claude/export-html.js` | Full | ✅ Tested | HTML `.html` |
-| `claude/export-html-clean.js` | Clean | ✅ Tested | HTML `.html` |
-| `claude/export-json.js` | Full | ✅ Tested | JSON `.json` |
-| `claude/export-pdf-clean-serif.js` | Clean | ✅ Tested | PDF (print dialog, serif) |
-| `claude/export-pdf-serif.js` | Full | ✅ Tested | PDF (print dialog, serif) |
-| `claude/export-pdf-clean-sans.js` | Clean | ✅ Tested | PDF (print dialog, sans-serif) |
-| `claude/export-pdf-sans.js` | Full | ✅ Tested | PDF (print dialog, sans-serif) |
+| `claude/v1.2.0/export-markdown.js` | Full | ✅ Tested | Markdown `.md` |
+| `claude/v1.2.0/export-markdown-clean.js` | Clean | ✅ Tested | Markdown `.md` |
+| `claude/v1.2.0/export-plaintext.js` | Full | ✅ Tested | Plain text `.txt` |
+| `claude/v1.2.0/export-plaintext-clean.js` | Clean | ✅ Tested | Plain text `.txt` |
+| `claude/v1.2.0/export-html.js` | Full | ✅ Tested | HTML `.html` |
+| `claude/v1.2.0/export-html-clean.js` | Clean | ✅ Tested | HTML `.html` |
+| `claude/v1.2.0/export-json.js` | Full | ✅ Tested | JSON `.json` |
+| `claude/v1.2.0/export-pdf-clean-serif.js` | Clean | ✅ Tested | PDF (print dialog, serif) |
+| `claude/v1.2.0/export-pdf-serif.js` | Full | ✅ Tested | PDF (print dialog, serif) |
+| `claude/v1.2.0/export-pdf-clean-sans.js` | Clean | ✅ Tested | PDF (print dialog, sans-serif) |
+| `claude/v1.2.0/export-pdf-sans.js` | Full | ✅ Tested | PDF (print dialog, sans-serif) |
 
 JSON has no clean version — structured data is always complete
 by nature.
