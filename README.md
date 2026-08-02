@@ -114,7 +114,7 @@ Neither has a native workaround.
 
 Recent OS-level changes to clipboard sandboxing — particularly
 on macOS — have added a further layer of complexity to
-copy-to-clipboard workflows that compounds these failures for
+copy-to-clipboard workflows that may compound these failures for
 some users.
 
 ---
