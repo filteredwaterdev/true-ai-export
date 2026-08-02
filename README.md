@@ -48,9 +48,7 @@ scrolls, older messages are unloaded and newer ones are swapped
 in.
 
 This is a reasonable approach to reducing browser memory usage
-and improving scroll performance on the user's local machine.
-
-It was shipped without solving transcript portability first. And
+and improving scroll performance on the user's local machine. However, it was shipped without solving transcript portability first. And
 it silently broke the most fundamental text operation available
 on any computing platform: select, copy to clipboard, paste.
 
