@@ -170,6 +170,14 @@ communities and feedback channels Anthropic monitors. This
 regression looks smaller than it is from inside your systems.
 It is not small.
 
+A note on a related but separate issue: I and many other users
+have independently noted that large text pastes into the Claude
+input box are silently converted to empty file attachments.
+That is a distinct regression affecting the paste-in direction.
+It is not the focus of this issue or of the specific linked project,
+but it is noted here because it affects the exact same user
+population and compounds the impact. Claude web UI is broken. 
+
 ---
 
 ## WORKING FIX — BUILT BY AN AFFECTED USER
