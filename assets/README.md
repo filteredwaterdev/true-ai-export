@@ -13,11 +13,11 @@ out of the platform and into the user's local environment —
 distinct from copy (clipboard), download (from internet),
 and save (local file that already exists).
 
-This icon represents a genuinely new function category:
+This icon represents a new function category:
 **Transcript Portability** — the retrieval of conversation
 data from a remote platform backend and its materialisation
 as a portable local file, on demand, in a format of the
-user's choosing.
+user's choosing, and unhindered by any virtualized rendering.
 
 ## Proposed UI behaviour
 
