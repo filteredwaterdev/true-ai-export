@@ -1,0 +1,21 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-label="Save to file"
+  role="img"
+>
+  <!-- Document body with folded top-right corner -->
+  <path d="M2 22V2h7l4 4v16H2z" />
+  <!-- Fold crease -->
+  <path d="M9 2v4h4" />
+  <!-- Right-facing arrow: Save to file / Transcript Portability -->
+  <path d="M14 12h8" />
+  <path d="M19 9l3 3-3 3" />
+</svg>
