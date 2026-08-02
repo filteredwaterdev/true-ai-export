@@ -273,7 +273,7 @@ for resolution, and add it to the public roadmap.
 
 Expected: Complete conversation transcript. 
 Actual: Fragment — only messages near current scroll position
-— with no reported error or indication the output is incomplete
+— with no reported error or indication the output is incomplete.
 
 **Save Page As:**
 1. Open any conversation of substantial length on claude.ai
@@ -281,7 +281,7 @@ Actual: Fragment — only messages near current scroll position
 3. Open the saved file
 
 Expected: Complete, usable conversation record. 
-Actual: Broken, unusable output
+Actual: Broken, unusable output.
 
 **Print to PDF:**
 1. Open any conversation of substantial length on claude.ai
@@ -289,7 +289,7 @@ Actual: Broken, unusable output
 3. Open the PDF
 
 Expected: Complete, usable conversation record. 
-Actual: Broken, unusable output
+Actual: Broken, unusable output.
 
 ---
 
