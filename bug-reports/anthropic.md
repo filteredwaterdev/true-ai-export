@@ -1,6 +1,6 @@
 # Bug Report Template — Anthropic Support
-# To be modified as required and sent to: support@anthropic.com
-# Example subject line provided below 
+### To be modified as required and sent to: support@anthropic.com
+### Example subject line provided below 
 
 ---
 
