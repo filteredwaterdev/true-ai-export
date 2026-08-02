@@ -15,19 +15,18 @@ interface — working fix demonstrated
 
 To the Anthropic Product and Engineering Team,
 
-I am submitting a formal bug report documenting a regression
+This is a formal bug report documenting a regression
 in the claude.ai web interface that introduced the loss of
 ability to copy conversation transcripts to the OS clipboard
 and simultaneously introduced the same regression in every
 other browser-native mechanism for retrieving page content.
-I have independently identified the root cause after extensive
+The root cause has been independently identified after extensive
 troubleshooting.
 
 A working fix has been built and published at:
 https://github.com/filteredwaterdev/true-ai-export
 
-I am writing this as a formal technical report and expect a
-formal engineering response with a remediation timeline.
+This report expects a formal engineering response with a remediation timeline.
 
 ---
 
@@ -143,13 +142,12 @@ relationship to what is available on the backend.
 ## IMPACT
 
 This regression completely destroys a legitimate, high-value
-workflow that functioned reliably and that I paid for as a
-subscriber.
+workflow that functioned reliably and that subscribers paid for. 
 
-I am a paying subscriber doing text-based knowledge work in
+Paying subscribers doing text-based knowledge work in
 long sessions where the conversation transcript is the work
-product. For users like me, the claude.ai web interface IS
-the product. There is no API alternative for this use case.
+product have no alternative. The claude.ai web interface IS
+the product for this user population. There is no API alternative for this use case.
 There is no fallback. The web interface is what was sold.
 The web interface is what is broken.
 
@@ -170,8 +168,8 @@ communities and feedback channels Anthropic monitors. This
 regression looks smaller than it is from inside your systems.
 It is not small.
 
-A note on a related but separate issue: I and many other users
-have independently noted that large text pastes into the Claude
+A note on a related but separate issue: many users have independently 
+noted that moderate to large text pastes into the Claude
 input box are silently converted to empty file attachments.
 That is a distinct regression affecting the paste-in direction.
 It is not the focus of this issue or of the specific linked project,
@@ -182,8 +180,8 @@ population and compounds the impact. Claude web UI is broken.
 
 ## WORKING FIX — BUILT BY AN AFFECTED USER
 
-Because no native workaround exists, I built one. It is
-published at:
+Because no native workaround exists, one was built by an affected 
+user. It is published at:
 
 https://github.com/filteredwaterdev/true-ai-export
 
@@ -272,7 +270,7 @@ roadmap.
 
 ---
 
-I expect confirmation of receipt of this report and a
+This report warrants confirmation of receipt of this report and a
 substantive response regarding remediation timeline. A
 working fix exists and is publicly available. The
 infrastructure to implement it natively already exists
