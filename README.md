@@ -1,7 +1,7 @@
 # true-ai-export
 
-There are two distinct things that are broken in current AI web
-interfaces, and both need to be stated clearly.
+There are two distinct portability-related things that are broken 
+in current AI web interfaces, and both need to be stated clearly.
 
 **The first** is the ability to select any arbitrary portion of a
 conversation — a single sentence, a paragraph, a specific response,
