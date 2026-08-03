@@ -279,7 +279,7 @@ justification for further delay.
 
 ---
 
-*This bug report template is published at:*
-*https://github.com/filteredwaterdev/true-ai-export/bug-reports/anthropic.md*
+*This bug report template is published at:* 
+*https://github.com/filteredwaterdev/true-ai-export/bug-reports/anthropic.md.* 
 *It is available for any affected user to copy, personalise,*
 *and submit.*
