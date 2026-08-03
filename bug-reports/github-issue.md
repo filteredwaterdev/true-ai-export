@@ -192,6 +192,8 @@ population and compounds the impact. Claude web UI is broken.
 
 ## Working Fix
 
+The working fix referenced in this report addresses transcript portability only — it provides a workaround for the export direction. It does not and cannot fix the broken clipboard copy behaviour. That requires a native fix to how virtualized rendering interacts with browser text selection. Both issues are real, both are documented here, and neither substitutes for the other.
+
 A user built a working fix and published it at:
 
 **https://github.com/filteredwaterdev/true-ai-export**
