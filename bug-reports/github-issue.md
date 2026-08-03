@@ -180,8 +180,8 @@ are less represented in the communities Anthropic monitors.
 The regression appears smaller than it is from inside
 Anthropic's feedback systems. It is not small.
 
-A note on a related but separate issue: I and many other users
-have independently noted that large text pastes into the Claude
+A note on a related but separate issue: many users have independently 
+noted that moderate to large text pastes into the Claude
 input box are silently converted to empty file attachments.
 That is a distinct regression affecting the paste-in direction.
 It is not the focus of this issue or of the specific linked project,
