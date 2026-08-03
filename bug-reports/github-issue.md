@@ -30,8 +30,7 @@ affected user at:
 
 The fix calls the same internal API endpoint that claude.ai
 already uses on every page load. The engineering complexity of
-a native implementation is demonstrably trivial. This issue is
-filed alongside a pull request referencing that implementation.
+a native implementation is demonstrably trivial.
 
 ---
 
