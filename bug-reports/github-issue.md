@@ -211,8 +211,8 @@ locally in multiple formats:
 - PDF — sans-serif (full and clean)
 
 Eleven scripts in total, tested and confirmed working on:
-- Brave / Edge (macOS, Windows)
-- Firefox (macOS, Windows)
+- Brave (macOS)
+- Firefox (macOS)
 - Safari (macOS) — with one additional user step due to
   Safari's clipboard security policy
 
