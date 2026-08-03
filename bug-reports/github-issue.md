@@ -30,7 +30,9 @@ affected user at:
 
 The fix calls the same internal API endpoint that claude.ai
 already uses on every page load. The engineering complexity of
-a native implementation is demonstrably trivial.
+a native export implementation is demonstrably trivial.
+
+The working fix referenced in this report addresses transcript portability only — it provides a workaround for the export direction. It does not and cannot fix the broken clipboard copy behaviour. That requires a native fix to how virtualized rendering interacts with browser text selection. Both issues are real, both are documented here, and neither substitutes for the other.
 
 ---
 
