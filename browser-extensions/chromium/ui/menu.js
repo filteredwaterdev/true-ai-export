@@ -121,23 +121,45 @@
     }
 
     // Menu sits above the trigger by default because the widget is
-    // anchored to the bottom of the viewport. It flips below when there
-    // is not enough room above, and switches side when it would run off
-    // the left edge. It never scrolls the page.
+    // anchored to the bottom of the viewport. It flips below when below
+    // has more room, and switches side when it would run off the left
+    // edge. It never scrolls the page.
+    //
+    // Choosing a side is not enough on its own: in a short window
+    // neither side can hold the whole menu, and the stylesheet's
+    // max-height is a fraction of the viewport rather than of the space
+    // the chosen side actually has. So the height is capped to that
+    // space here. The menu scrolls inside itself instead of hanging off
+    // the top or bottom of the screen.
     function place() {
       menu.setAttribute('data-placement', 'above');
       menu.setAttribute('data-align', 'right');
+      // Cleared first so each open measures the menu at the size the
+      // stylesheet gives it, not at the size the last open capped it to.
+      menu.style.maxHeight = '';
 
-      const anchor = menu.parentElement.getBoundingClientRect();
-      const size = menu.getBoundingClientRect();
       const margin = 8;
+      const anchor = menu.parentElement.getBoundingClientRect();
+      const height = menu.getBoundingClientRect().height;
 
-      if (anchor.top - size.height - margin < 0 &&
-          window.innerHeight - anchor.bottom > anchor.top) {
+      const roomAbove = anchor.top - margin;
+      const roomBelow = window.innerHeight - anchor.bottom - margin;
+
+      if (height > roomAbove && roomBelow > roomAbove) {
         menu.setAttribute('data-placement', 'below');
       }
 
-      if (anchor.right - size.width < 0) {
+      const room =
+        menu.getAttribute('data-placement') === 'below'
+          ? roomBelow
+          : roomAbove;
+
+      if (height > room) {
+        menu.style.maxHeight = `${Math.max(0, room)}px`;
+      }
+
+      const width = menu.getBoundingClientRect().width;
+      if (anchor.right - width < 0) {
         menu.setAttribute('data-align', 'left');
       }
     }

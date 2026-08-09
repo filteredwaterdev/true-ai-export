@@ -91,6 +91,10 @@
   --surface-active: #e7e4dc;
   --text: #1a1a1a;
   --text-muted: #57534e;
+  /* --border draws the edge of a control or a floating panel, so it
+     carries 3:1 against both the surface it sits on and the page
+     behind it. --border-soft is the decorative rule between menu
+     items, which conveys nothing on its own. */
   --border: #8a8578;
   --border-soft: #d6d2c8;
   --ring: #0b57d0;
@@ -197,7 +201,7 @@
   max-width: 320px;
   margin-bottom: 8px;
   padding: 10px 12px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
   box-shadow: var(--shadow);
@@ -242,7 +246,7 @@
   overflow-y: auto;
   margin: 0;
   padding: 6px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
   box-shadow: var(--shadow);
