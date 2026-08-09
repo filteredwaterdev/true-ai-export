@@ -1,0 +1,7 @@
+# The extension has no build step and no dependencies. Nothing below
+# should ever appear in this directory; this file is here so that it
+# cannot arrive by accident.
+node_modules/
+*.zip
+*.crx
+*.pem
