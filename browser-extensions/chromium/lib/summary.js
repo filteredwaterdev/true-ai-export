@@ -10,8 +10,10 @@
  *
  * The colour rule is the console scripts' rule:
  *   statusColor = warningCount > 0 ? '#FF9800' : '#4CAF50'
- * JSON never flags, so JSON is always the complete tone — the same
- * choice export-json.js makes.
+ * with one addition. A clean export also reports the flagged tone when
+ * it omitted technical blocks, because the green check would otherwise
+ * claim that nothing was left out. JSON never flags, so JSON is always
+ * the complete tone — the same choice export-json.js makes.
  *
  * Text is written in words rather than symbols because it is read out
  * by the live region. Colour is never the only signal.
@@ -83,9 +85,18 @@
       );
     }
 
+    // Never the complete tone when something was left out. A clean
+    // export drops tool use, tool results and thinking by design, but
+    // "by design" is still an omission, so it reports the flagged tone
+    // rather than a green check that says nothing was lost.
+    const flagged =
+      kind === 'clean'
+        ? warningCount > 0 || omittedCount > 0
+        : kind !== 'json' && warningCount > 0;
+
     return {
       text: parts.join(' '),
-      tone: kind !== 'json' && warningCount > 0 ? 'flagged' : 'complete'
+      tone: flagged ? 'flagged' : 'complete'
     };
   }
 
