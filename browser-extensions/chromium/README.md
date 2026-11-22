@@ -188,15 +188,16 @@ animation.
 The status sits above the button and clears itself after an export
 finishes.
 
-- **In progress** — the button is disabled for the duration, so a
+- **In progress**: the button is disabled for the duration, so a
   second click cannot start a duplicate export. If the fetch takes
   more than about two seconds the text says what is happening.
-- **Complete** — how many human and Claude messages were saved.
-- **Complete, with flags** — the same, plus what was flagged in
-  the file or omitted from it. A clean export that dropped tool
-  use, tool results or thinking blocks reports this state, never
-  the plain complete state.
-- **Error** — shown in the widget, never as a browser alert.
+- **Complete**: how many human and Claude messages were saved
+  and, for a clean export, how many technical blocks were omitted.
+- **Complete, with flags**: the same, plus what was flagged in
+  the file: content gaps, or attachments and images in a clean
+  export. Omitted technical blocks alone never cause this state,
+  matching the console scripts.
+- **Error**: shown in the widget, never as a browser alert.
   Session expired, wrong page, and an empty conversation each say
   what happened and what to do next. Nothing is written to disk
   when an export fails.
