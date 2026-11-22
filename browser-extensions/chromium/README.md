@@ -67,8 +67,8 @@ lowercased, with spaces and reserved characters replaced by
 underscores, exactly as the console scripts name them.
 
 **About these formats** at the bottom of the menu expands a short
-description of each entry in place. It opens nothing and navigates
-nowhere.
+description of each entry in place and scrolls it into view within
+the menu. It opens nothing and navigates nowhere.
 
 ---
 
