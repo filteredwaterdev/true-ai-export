@@ -91,7 +91,13 @@ console script run on the same page.
 The seven text formatters are byte-identical source to the
 functions in the console scripts. The four PDF documents are built
 by one parameterised builder rather than four copies; its output
-was compared against all four scripts.
+was compared against all four scripts. The document written into
+the print tab is identical to the console script's apart from one
+Content-Security-Policy `<meta>`, inserted as the first element of
+`<head>`. It blocks scripts, remote loads, forms and `<base>` in
+that tab and allows only the document's own stylesheet, so the tab
+stays inert even if escaping ever regressed, whatever headers
+claude.ai itself sends.
 
 ---
 
@@ -145,7 +151,8 @@ dialog, the same way the PDF console scripts do.
 The print tab is opened at the moment of the click rather than
 after the conversation has been fetched, because a browser only
 allows a new tab while the click that asked for it is still
-current. The document written into that tab is unchanged.
+current. The document written into that tab is unchanged apart
+from the policy meta described above.
 
 ---
 
