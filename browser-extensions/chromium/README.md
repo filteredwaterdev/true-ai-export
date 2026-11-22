@@ -227,7 +227,6 @@ No data leaves the device.
 browser-extensions/chromium/
   manifest.json
   content_script.js      bootstrap, route detection, orchestration
-  background.js          service worker, one listener, no state
   lib/
     walk.js              shared helpers copied from the console scripts
     api.js               id resolution, validation, fetch, error mapping
