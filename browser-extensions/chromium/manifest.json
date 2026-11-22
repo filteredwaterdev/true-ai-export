@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "true-ai-export",
+  "version": "1.2.0",
+  "description": "Export complete Claude.ai conversation transcripts via Anthropic's own API. Bypasses virtualized rendering that broke clipboard copy and all browser-native export mechanisms.",
+  "homepage_url": "https://github.com/filteredwaterdev/true-ai-export",
+
+  "icons": {
+    "16": "icons/export-icon-16.png",
+    "32": "icons/export-icon-32.png",
+    "48": "icons/export-icon-48.png",
+    "128": "icons/export-icon-128.png"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/export-icon-16.png",
+      "32": "icons/export-icon-32.png",
+      "48": "icons/export-icon-48.png",
+      "128": "icons/export-icon-128.png"
+    },
+    "default_title": "true-ai-export — Save to file"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "permissions": [],
+
+  "host_permissions": [
+    "https://claude.ai/*"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": [
+        "lib/walk.js",
+        "lib/api.js",
+        "lib/filename.js",
+        "lib/summary.js",
+        "lib/format-markdown.js",
+        "lib/format-plaintext.js",
+        "lib/format-html.js",
+        "lib/format-json.js",
+        "lib/format-pdf.js",
+        "lib/deliver.js",
+        "ui/styles.js",
+        "ui/menu.js",
+        "ui/button.js",
+        "content_script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

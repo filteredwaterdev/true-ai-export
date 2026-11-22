@@ -1,6 +1,9 @@
 # Browser Extensions
 
-**Status: Planned — not yet built**
+**Status: Chromium built — see `chromium/README.md`, which is
+authoritative for that extension's directory layout and the
+permissions it requests. Firefox and Safari planned — not yet
+built**
 
 This directory is reserved for browser extension implementations
 of the true-ai-export functionality. The console scripts in
