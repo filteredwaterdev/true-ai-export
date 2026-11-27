@@ -23,10 +23,6 @@
     "default_title": "true-ai-export — Save to file"
   },
 
-  "background": {
-    "service_worker": "background.js"
-  },
-
   "permissions": [],
 
   "host_permissions": [

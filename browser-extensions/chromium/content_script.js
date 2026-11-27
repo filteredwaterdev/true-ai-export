@@ -248,7 +248,8 @@
     // The print tab is opened here, synchronously, while the click that
     // started this is still the current user activation. Opening it
     // after the fetch resolves is what the pop-up blocker stops on a
-    // slow connection. The document written into it is unchanged.
+    // slow connection. The document written into it is unchanged apart
+    // from the policy meta deliver.withPrintPolicy inserts.
     let printWindow = null;
     if (format.delivery === 'print') {
       printWindow = deliver.openPrintWindow();

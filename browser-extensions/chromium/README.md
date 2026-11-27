@@ -67,8 +67,8 @@ lowercased, with spaces and reserved characters replaced by
 underscores, exactly as the console scripts name them.
 
 **About these formats** at the bottom of the menu expands a short
-description of each entry in place. It opens nothing and navigates
-nowhere.
+description of each entry in place and scrolls it into view within
+the menu. It opens nothing and navigates nowhere.
 
 ---
 
@@ -91,7 +91,13 @@ console script run on the same page.
 The seven text formatters are byte-identical source to the
 functions in the console scripts. The four PDF documents are built
 by one parameterised builder rather than four copies; its output
-was compared against all four scripts.
+was compared against all four scripts. The document written into
+the print tab is identical to the console script's apart from one
+Content-Security-Policy `<meta>`, inserted as the first element of
+`<head>`. It blocks scripts, remote loads, forms and `<base>` in
+that tab and allows only the document's own stylesheet, so the tab
+stays inert even if escaping ever regressed, whatever headers
+claude.ai itself sends.
 
 ---
 
@@ -145,7 +151,8 @@ dialog, the same way the PDF console scripts do.
 The print tab is opened at the moment of the click rather than
 after the conversation has been fetched, because a browser only
 allows a new tab while the click that asked for it is still
-current. The document written into that tab is unchanged.
+current. The document written into that tab is unchanged apart
+from the policy meta described above.
 
 ---
 
@@ -181,15 +188,16 @@ animation.
 The status sits above the button and clears itself after an export
 finishes.
 
-- **In progress** — the button is disabled for the duration, so a
+- **In progress**: the button is disabled for the duration, so a
   second click cannot start a duplicate export. If the fetch takes
   more than about two seconds the text says what is happening.
-- **Complete** — how many human and Claude messages were saved.
-- **Complete, with flags** — the same, plus what was flagged in
-  the file or omitted from it. A clean export that dropped tool
-  use, tool results or thinking blocks reports this state, never
-  the plain complete state.
-- **Error** — shown in the widget, never as a browser alert.
+- **Complete**: how many human and Claude messages were saved
+  and, for a clean export, how many technical blocks were omitted.
+- **Complete, with flags**: the same, plus what was flagged in
+  the file: content gaps, or attachments and images in a clean
+  export. Omitted technical blocks alone never cause this state,
+  matching the console scripts.
+- **Error**: shown in the widget, never as a browser alert.
   Session expired, wrong page, and an empty conversation each say
   what happened and what to do next. Nothing is written to disk
   when an export fails.
@@ -227,7 +235,6 @@ No data leaves the device.
 browser-extensions/chromium/
   manifest.json
   content_script.js      bootstrap, route detection, orchestration
-  background.js          service worker, one listener, no state
   lib/
     walk.js              shared helpers copied from the console scripts
     api.js               id resolution, validation, fetch, error mapping

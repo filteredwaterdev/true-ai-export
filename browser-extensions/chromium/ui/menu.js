@@ -192,12 +192,39 @@
       const nowOpen = aboutItem.getAttribute('aria-expanded') !== 'true';
       aboutItem.setAttribute('aria-expanded', String(nowOpen));
       aboutPanel.setAttribute('data-open', String(nowOpen));
+      if (nowOpen) revealAbout();
+    }
+
+    // The panel opens at the end of the menu, which is often below the
+    // part of the menu that is visible. The menu's own scroll position
+    // is moved so the About item and its panel come into view. Only the
+    // menu scrolls, never the page. If the item and panel together are
+    // taller than the menu, the item is aligned to the top so the start
+    // of the panel is visible.
+    function revealAbout() {
+      const view = menu.getBoundingClientRect();
+      const top = view.top + menu.clientTop;
+      const bottom = top + menu.clientHeight;
+      const start = aboutItem.getBoundingClientRect().top;
+      const end = aboutPanel.getBoundingClientRect().bottom;
+      let delta = 0;
+      if (end - start > bottom - top || start < top) delta = start - top;
+      else if (end > bottom) delta = end - bottom;
+      if (delta === 0) return;
+      const reduce = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+      menu.scrollTo({
+        top: menu.scrollTop + delta,
+        behavior: reduce ? 'instant' : 'smooth',
+      });
     }
 
     function activate(item) {
       if (item === aboutItem) {
-        // The About panel expands in place. The menu stays open so the
-        // person can read it and then pick a format.
+        // The About panel expands in place and is scrolled into view
+        // within the menu. The menu stays open so the person can read
+        // it and then pick a format.
         toggleAbout();
         return;
       }

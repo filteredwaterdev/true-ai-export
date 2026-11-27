@@ -12,12 +12,47 @@
  * rather than after the fetch resolves. Chrome's transient user
  * activation expires while a fetch is in flight, and opening the tab
  * afterwards is what the popup blocker stops on a slow connection. The
- * document written into the tab is unchanged.
+ * document written into the tab is unchanged apart from one
+ * Content-Security-Policy meta, inserted as the first child of <head>.
  */
 (function () {
   'use strict';
 
   const ns = globalThis.TrueAiExport;
+
+  // The print tab is about:blank and shares claude.ai's origin, so this
+  // policy is a floor that does not depend on claude.ai's own headers:
+  // no script, no remote load of any kind, no form, no <base>. The only
+  // thing the document needs is its one static <style> element, allowed
+  // by hash. One hash per PDF variant, in this order: serif, serif
+  // (clean), sans, sans (clean). If the PDF stylesheet ever changes,
+  // these hashes have to be recomputed.
+  const PRINT_POLICY =
+    "default-src 'none'; " +
+    "style-src " +
+    "'sha256-IvYJPhe0L8ZZJNausLHiAk6mgh6KmXeaAGoDhmTkgJA=' " +
+    "'sha256-te74yhrs+Eu85ssI2xir0MV5+KiubjUaBkAYbVtpRYQ=' " +
+    "'sha256-CcOFKI05dVzbUtsEpcxOlxnBH8LKlhyActQbHWg1Bf8=' " +
+    "'sha256-6MkB99UZC6B2mSbYNsvyo0V5belaS3ePQxMIYIa9Y4Y='; " +
+    "base-uri 'none'; " +
+    "form-action 'none'";
+
+  const PRINT_POLICY_META =
+    '<meta http-equiv="Content-Security-Policy" content="' +
+    PRINT_POLICY + '">';
+
+  // Inserts the policy meta immediately after the first <head>, so it is
+  // parsed before anything else in the document. Throws if there is no
+  // <head>, so the export fails rather than printing without the policy.
+  function withPrintPolicy(html) {
+    const marker = '<head>';
+    const at = html.indexOf(marker);
+    if (at === -1) {
+      throw new Error('print document has no <head>');
+    }
+    const end = at + marker.length;
+    return html.slice(0, end) + '\n  ' + PRINT_POLICY_META + html.slice(end);
+  }
 
   function downloadFile(content, filename, mimeType) {
     const blob = new Blob([content], { type: mimeType });
@@ -37,7 +72,7 @@
   }
 
   function writePrintDocument(printWindow, html) {
-    printWindow.document.write(html);
+    printWindow.document.write(withPrintPolicy(html));
     printWindow.document.close();
 
     // Chromium-based browsers and Firefox fire onload reliably.
@@ -59,6 +94,7 @@
     downloadFile,
     openPrintWindow,
     writePrintDocument,
+    withPrintPolicy,
     closePrintWindow
   };
 })();
