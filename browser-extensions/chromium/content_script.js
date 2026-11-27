@@ -7,8 +7,14 @@
  *
  * Responsibilities:
  *   - the format registry, in the order assets/ui/menu-spec.md gives
- *   - mounting the widget on a conversation page and only there
+ *   - mounting the floating button on a conversation page, and only
+ *     when the "show floating button" setting is on
+ *   - answering the toolbar popup, which shows the same menu
  *   - running an export: fetch, build, deliver, report
+ *
+ * An export can be started from the floating button or from the
+ * toolbar popup. Either way it runs here, on the claude.ai page, so
+ * the fetch carries the page's own session exactly as before.
  *
  * Every network request this extension makes goes to claude.ai and is
  * made from here, on the claude.ai page, so the page's own session
@@ -25,6 +31,7 @@
   const { buildHtml, buildHtmlClean } = ns.formatHtml;
   const { buildJson } = ns.formatJson;
   const { buildPdf, buildPdfClean } = ns.formatPdf;
+  const { buildDocx, buildDocxClean } = ns.formatDocx;
 
   // Only a conversation page gets the widget. A project page, the
   // account pages and the home page all leave it absent, which is why
@@ -153,6 +160,26 @@
         const out = buildPdfClean(messages, name, 'sans');
         return { content: out.html, counts: out };
       }
+    },
+    {
+      id: 'docx',
+      label: 'Word',
+      kind: 'full',
+      delivery: 'download',
+      build: (messages, name) => {
+        const out = buildDocx(messages, name);
+        return { content: out.blob, counts: out };
+      }
+    },
+    {
+      id: 'docx-clean',
+      label: 'Word (clean)',
+      kind: 'clean',
+      delivery: 'download',
+      build: (messages, name) => {
+        const out = buildDocxClean(messages, name);
+        return { content: out.blob, counts: out };
+      }
     }
   ];
 
@@ -222,6 +249,17 @@
       description:
         'Human-readable conversation only, sans-serif typeface. ' +
         'Opens the print dialog.'
+    },
+    {
+      term: 'Word',
+      description:
+        'Full transcript as a .docx document. Opens in Pages, Word ' +
+        'and LibreOffice with real formatting; tables stay selectable.'
+    },
+    {
+      term: 'Word (clean)',
+      description:
+        'Human-readable conversation only, as a .docx document.'
     }
   ];
 
@@ -230,33 +268,64 @@
 
   let widget = null;
   let lingerTimer = null;
+  let busy = false;
+
+  // Setting from the toolbar popup. Default on, which keeps the
+  // behaviour of earlier versions.
+  let showButton = true;
+
+  // A print document built for a popup-started PDF export, waiting to
+  // be collected by the extension's print page. Held in memory only,
+  // for one export, and handed over once.
+  let pendingPrint = null;
 
   function isConversationPage() {
     return CONVERSATION_PATH.test(window.location.pathname);
   }
 
-  async function runExport(formatId) {
+  function randomToken() {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  /**
+   * source is 'button' (the floating button) or 'popup' (the toolbar
+   * popup). Resolves to { tone, text } and, for a popup-started PDF,
+   * printToken, which the popup passes to the print page.
+   *
+   * Progress and the result are shown on the floating button when it
+   * is mounted, whichever way the export was started.
+   */
+  async function runExport(formatId, source) {
     const format = FORMAT_BY_ID[formatId];
-    if (!format || !widget || widget.isBusy()) return;
+    if (!format) return { tone: 'error', text: 'Unknown format.' };
+    if (busy) {
+      return { tone: 'error', text: 'An export is already running.' };
+    }
 
     // Held locally: a route change part-way through an export unmounts
     // the widget and sets the shared reference to null, and this
     // function still has to finish reporting into the one it started
     // with rather than throwing on the way out.
     const ui = widget;
+    const show = (tone, text) => { if (ui && widget === ui) ui.setStatus(tone, text); };
 
-    // The print tab is opened here, synchronously, while the click that
-    // started this is still the current user activation. Opening it
-    // after the fetch resolves is what the pop-up blocker stops on a
-    // slow connection. The document written into it is unchanged apart
-    // from the policy meta deliver.withPrintPolicy inserts.
+    // From the floating button, the print tab is opened here,
+    // synchronously, while the click that started this is still the
+    // current user activation. Opening it after the fetch resolves is
+    // what the pop-up blocker stops on a slow connection. From the
+    // popup there is no click on this page to use, so the print
+    // document is handed to the extension's own print page instead.
+    // Either way the document is unchanged apart from the policy meta
+    // deliver.withPrintPolicy inserts.
     let printWindow = null;
-    if (format.delivery === 'print') {
+    if (format.delivery === 'print' && source !== 'popup') {
       printWindow = deliver.openPrintWindow();
       if (!printWindow) {
         const blocked = api.printWindowBlockedError();
-        ui.setStatus('error', blocked.uxMessage);
-        return;
+        show('error', blocked.uxMessage);
+        return { tone: 'error', text: blocked.uxMessage };
       }
     }
 
@@ -265,27 +334,18 @@
       lingerTimer = null;
     }
 
-    ui.setBusy(true, 'Starting export...');
+    busy = true;
+    if (ui) ui.setBusy(true, 'Starting export...');
 
     const slowTimer = setTimeout(() => {
-      if (widget === ui && ui.isBusy()) {
-        ui.setStatus(
-          'busy',
-          'Still fetching the conversation from claude.ai...'
-        );
-      }
+      if (busy) show('busy', 'Still fetching the conversation from claude.ai...');
     }, SLOW_FETCH_MS);
 
     try {
       const { messages, conversationName, rawData } =
-        await api.fetchConversation((message) => {
-          ui.setStatus('busy', message);
-        });
+        await api.fetchConversation((message) => show('busy', message));
 
-      ui.setStatus(
-        'busy',
-        `Got ${messages.length} messages. Building transcript...`
-      );
+      show('busy', `Got ${messages.length} messages. Building transcript...`);
 
       const { content, counts } =
         format.build(messages, conversationName, rawData);
@@ -294,8 +354,17 @@
         throw api.noReadableMessagesError();
       }
 
+      let printToken = null;
       if (format.delivery === 'print') {
-        deliver.writePrintDocument(printWindow, content);
+        if (printWindow) {
+          deliver.writePrintDocument(printWindow, content);
+        } else {
+          printToken = randomToken();
+          pendingPrint = {
+            token: printToken,
+            html: deliver.withPrintPolicy(content)
+          };
+        }
       } else {
         deliver.downloadFile(
           content,
@@ -306,26 +375,28 @@
 
       const described =
         summary.describe(format.kind, counts, format.delivery);
-      ui.setStatus(described.tone, described.text);
+      show(described.tone, described.text);
 
       lingerTimer = setTimeout(() => {
         lingerTimer = null;
-        if (widget === ui) ui.clearStatus();
+        if (ui && widget === ui) ui.clearStatus();
       }, STATUS_LINGER_MS);
+
+      return { tone: described.tone, text: described.text, printToken };
 
     } catch (error) {
       // Nothing has been written at this point: the download only
       // happens after a successful build. A print tab opened for this
       // attempt is closed so no blank tab is left behind.
       deliver.closePrintWindow(printWindow);
-      ui.setStatus(
-        'error',
-        error.uxMessage || 'Export failed. Try again.'
-      );
+      const text = error.uxMessage || 'Export failed. Try again.';
+      show('error', text);
+      return { tone: 'error', text };
 
     } finally {
       clearTimeout(slowTimer);
-      ui.setBusy(false);
+      busy = false;
+      if (ui) ui.setBusy(false);
     }
   }
 
@@ -337,7 +408,7 @@
         label: format.label
       })),
       about: ABOUT,
-      onSelect: runExport
+      onSelect: (formatId) => { runExport(formatId, 'button'); }
     });
   }
 
@@ -352,7 +423,7 @@
   }
 
   function syncToRoute() {
-    if (isConversationPage()) {
+    if (showButton && isConversationPage()) {
       mountWidget();
     } else {
       unmountWidget();
@@ -389,5 +460,51 @@
   window.addEventListener('popstate', checkForRouteChange);
   setInterval(checkForRouteChange, 1000);
 
-  syncToRoute();
+  // The toolbar popup. It asks for the menu, starts exports, and the
+  // extension's print page collects a popup-started PDF document.
+  // Messages are accepted only from this extension's own pages.
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (sender.id !== chrome.runtime.id || !message) return false;
+
+    if (message.action === 'menu') {
+      sendResponse({
+        conversation: isConversationPage(),
+        busy,
+        items: FORMATS.map((f) => ({ id: f.id, label: f.label })),
+        about: ABOUT
+      });
+      return false;
+    }
+
+    if (message.action === 'export') {
+      if (!isConversationPage()) {
+        sendResponse({ tone: 'error', text: 'Open a conversation first.' });
+        return false;
+      }
+      runExport(message.formatId, 'popup').then(sendResponse);
+      return true;   // the response is sent asynchronously
+    }
+
+    if (message.action === 'takePrint') {
+      const ok = pendingPrint && message.token === pendingPrint.token;
+      sendResponse(ok ? { html: pendingPrint.html } : { html: null });
+      if (ok) pendingPrint = null;
+      return false;
+    }
+
+    return false;
+  });
+
+  // The "show floating button" setting, stored by the popup.
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.showButton) {
+      showButton = changes.showButton.newValue !== false;
+      syncToRoute();
+    }
+  });
+
+  chrome.storage.local.get({ showButton: true }, (stored) => {
+    showButton = stored.showButton !== false;
+    syncToRoute();
+  });
 })();

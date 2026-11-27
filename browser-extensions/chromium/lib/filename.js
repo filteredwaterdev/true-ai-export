@@ -25,7 +25,9 @@
     'plaintext-clean': '-clean.txt',
     'html': '.html',
     'html-clean': '-clean.html',
-    'json': '.json'
+    'json': '.json',
+    'docx': '.docx',
+    'docx-clean': '-clean.docx'
   };
 
   const MIME = {
@@ -35,7 +37,9 @@
     'plaintext-clean': 'text/plain;charset=utf-8',
     'html': 'text/html;charset=utf-8',
     'html-clean': 'text/html;charset=utf-8',
-    'json': 'application/json;charset=utf-8'
+    'json': 'application/json;charset=utf-8',
+    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'docx-clean': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   };
 
   function forFormat(formatId, conversationName) {

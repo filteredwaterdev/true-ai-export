@@ -39,6 +39,8 @@ consistent with existing claude.ai menus.
 │ PDF — serif (clean)      │
 │ PDF — sans-serif         │
 │ PDF — sans-serif (clean) │
+│ Word                     │
+│ Word (clean)             │
 ├──────────────────────────┤
 │ About these formats      │
 └──────────────────────────┘
@@ -82,6 +84,13 @@ dialog.
 
 **PDF — sans-serif (clean)** — Human-readable conversation
 only, sans-serif typeface. Opens print dialog.
+
+**Word** — Full transcript as a .docx document. Opens in
+Pages, Word and LibreOffice with real headings, lists and
+formatting. Tables are written as selectable text.
+
+**Word (clean)** — Human-readable conversation only, as a
+.docx document.
 
 ## File naming
 

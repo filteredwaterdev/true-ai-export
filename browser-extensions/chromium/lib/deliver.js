@@ -54,6 +54,8 @@
     return html.slice(0, end) + '\n  ' + PRINT_POLICY_META + html.slice(end);
   }
 
+  // content may be a string or a Blob (the Word formatter returns a
+  // Blob); new Blob([...]) accepts either as a part.
   function downloadFile(content, filename, mimeType) {
     const blob = new Blob([content], { type: mimeType });
     const a = document.createElement('a');

@@ -40,6 +40,8 @@ PDF — serif
 PDF — serif (clean)
 PDF — sans-serif
 PDF — sans-serif (clean)
+Word
+Word (clean)
 ─────────────────
 About these formats →
 ```
