@@ -163,7 +163,7 @@ async function trueAiExportMarkdown() {
       .replace(/[<>:"/\\|?*\x00-\x1F]/g, '_')
       .replace(/\s+/g, '_')
       .replace(/_{2,}/g, '_')
-      .replace(/^_+|_+$/g, '')
+      .replace(/^[._]+|_+$/g, '')
       .toLowerCase()
       .substring(0, 100) || 'claude_conversation';
   }

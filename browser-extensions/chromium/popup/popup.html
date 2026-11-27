@@ -18,7 +18,7 @@
       line-height: 1.5;
       color: #111;
       background: #fff;
-      width: 260px;
+      width: 280px;
     }
 
     .header {
@@ -35,36 +35,104 @@
 
     .header p {
       font-size: 11px;
-      color: #888;
-    }
-
-    .body {
-      padding: 12px 14px;
-      color: #333;
-    }
-
-    .body p {
-      margin-bottom: 8px;
-    }
-
-    .body p:last-child {
-      margin-bottom: 0;
+      color: #6b6b6b;
     }
 
     .where {
+      padding: 10px 14px;
+      color: #444;
+    }
+
+    .formats {
+      list-style: none;
+      padding: 4px 0;
+    }
+
+    .formats button {
+      display: block;
+      width: 100%;
+      padding: 6px 14px;
+      border: 0;
+      background: none;
+      font: inherit;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .formats button:hover,
+    .formats button:focus-visible {
+      background: #f1f0ec;
+      outline: none;
+    }
+
+    .formats button:focus-visible {
+      box-shadow: inset 0 0 0 2px #1a56db;
+    }
+
+    .formats button[disabled] {
+      color: #8a8a8a;
+      cursor: default;
+      background: none;
+    }
+
+    .status {
+      margin: 0 14px 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .status[hidden] { display: none; }
+    .status[data-tone="busy"]     { background: #eef4ff; color: #1e3a8a; }
+    .status[data-tone="complete"] { background: #edf7ef; color: #14532d; }
+    .status[data-tone="flagged"]  { background: #fff7e6; color: #7c4a03; }
+    .status[data-tone="error"]    { background: #fdeeee; color: #8a1c1c; }
+
+    details {
+      border-top: 1px solid #eee;
+      padding: 8px 14px;
+      font-size: 12px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: #444;
+    }
+
+    dl {
+      margin-top: 6px;
+    }
+
+    dt {
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    dd {
       color: #555;
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #eee;
+      padding: 10px 14px;
+      font-size: 12px;
+      cursor: pointer;
     }
 
     .footer {
       padding: 8px 14px;
       border-top: 1px solid #eee;
       font-size: 10px;
-      color: #bbb;
+      color: #8a8a8a;
       text-align: center;
     }
 
     .footer a {
-      color: #bbb;
+      color: inherit;
       text-decoration: none;
     }
 
@@ -74,13 +142,19 @@
 
     @media (prefers-color-scheme: dark) {
       body { color: #f0eee6; background: #2b2a27; }
-      .header { border-bottom-color: #4b4842; }
+      .header, details, .setting, .footer { border-color: #4b4842; }
       .header h1 { color: #f0eee6; }
-      .header p { color: #a8a296; }
-      .body { color: #ddd8cc; }
-      .where { color: #c4bfb4; }
-      .footer { border-top-color: #4b4842; color: #8a8578; }
-      .footer a { color: #8a8578; }
+      .header p, .footer { color: #a8a296; }
+      .where, summary { color: #ddd8cc; }
+      dd { color: #c4bfb4; }
+      .formats button:hover,
+      .formats button:focus-visible { background: #3a3935; }
+      .formats button:focus-visible { box-shadow: inset 0 0 0 2px #8ab4ff; }
+      .formats button[disabled] { color: #8a8578; }
+      .status[data-tone="busy"]     { background: #1f2a44; color: #c7d7ff; }
+      .status[data-tone="complete"] { background: #1d3324; color: #bfe8c9; }
+      .status[data-tone="flagged"]  { background: #3d2f12; color: #f3d9a4; }
+      .status[data-tone="error"]    { background: #401d1d; color: #f5c2c2; }
     }
   </style>
 </head>
@@ -91,16 +165,23 @@
     <p>Save to file</p>
   </div>
 
-  <div class="body">
-    <p>
-      Saves a complete Claude.ai conversation transcript to a file, in
-      any of eleven formats, using Anthropic's own conversation API.
-    </p>
-    <p id="where" class="where">
-      Open a conversation on claude.ai and use the “Save to file”
-      button in the bottom-right corner of the page.
-    </p>
-  </div>
+  <p id="where" class="where">
+    Open a conversation on claude.ai to choose a format.
+  </p>
+
+  <ul id="formats" class="formats" hidden></ul>
+
+  <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+
+  <details id="about-section" hidden>
+    <summary>About these formats</summary>
+    <dl id="about"></dl>
+  </details>
+
+  <label class="setting">
+    <input type="checkbox" id="show-button">
+    Show the floating button on the page
+  </label>
 
   <div class="footer">
     <a href="https://github.com/filteredwaterdev/true-ai-export"

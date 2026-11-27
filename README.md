@@ -195,6 +195,8 @@ detail.
 | `claude/v1.2.0/export-html.js` | Full | ✅ Tested | HTML `.html` |
 | `claude/v1.2.0/export-html-clean.js` | Clean | ✅ Tested | HTML `.html` |
 | `claude/v1.2.0/export-json.js` | Full | ✅ Tested | JSON `.json` |
+| `claude/v1.2.0/export-docx.js` | Full | ✅ Tested | Word `.docx` |
+| `claude/v1.2.0/export-docx-clean.js` | Clean | ✅ Tested | Word `.docx` |
 | `claude/v1.2.0/export-pdf-clean-serif.js` | Clean | ✅ Tested | PDF (print dialog, serif) |
 | `claude/v1.2.0/export-pdf-serif.js` | Full | ✅ Tested | PDF (print dialog, serif) |
 | `claude/v1.2.0/export-pdf-clean-sans.js` | Clean | ✅ Tested | PDF (print dialog, sans-serif) |
@@ -301,7 +303,7 @@ Enter.
 
 **Step 5.** Retrieve your export:
 
-*Markdown, plain text, HTML, JSON — Chromium-based browsers,
+*Markdown, plain text, HTML, JSON, Word — Chromium-based browsers,
 Firefox and derivatives:* A file downloads automatically to
 your Downloads folder, named after your conversation. Clean
 versions append `-clean` to the filename.
@@ -316,6 +318,10 @@ the console:
 ```javascript
 copy(window._trueAiLastExport.content)
 ```
+
+*Word scripts — Safari:* A **"⬇️ Click to download .docx"**
+button appears in the top-right corner of the page. Click it
+once to download the file.
 
 *PDF scripts — Chromium-based browsers, Firefox and
 derivatives:* A print dialog opens automatically. Select your
@@ -353,6 +359,7 @@ another.*
 | Plain text | Maximum compatibility, paste anywhere, no syntax |
 | HTML | Reading, archiving, sharing — opens in any browser |
 | JSON | Structured data, analysis, programmatic use |
+| Word | Pages, Word, Google Docs — editable documents |
 | PDF (serif) | Formal, legal, archival — print or save as PDF |
 | PDF (sans-serif) | General professional use — print or save as PDF |
 

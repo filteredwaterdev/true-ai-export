@@ -23,7 +23,7 @@
     "default_title": "true-ai-export — Save to file"
   },
 
-  "permissions": [],
+  "permissions": ["storage"],
 
   "host_permissions": [
     "https://claude.ai/*"
@@ -42,6 +42,7 @@
         "lib/format-html.js",
         "lib/format-json.js",
         "lib/format-pdf.js",
+        "lib/format-docx.js",
         "lib/deliver.js",
         "ui/styles.js",
         "ui/menu.js",

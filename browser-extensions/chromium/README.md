@@ -4,9 +4,11 @@ Manifest V3 extension for Chrome, Brave, Edge and other
 Chromium-based browsers. It does what the console scripts in
 `claude/v1.2.0/` do, without the developer console.
 
-On a claude.ai conversation page a **Save to file** button appears
-in the bottom-right corner. Clicking it opens a menu of the eleven
-formats. Choosing one fetches the conversation from Anthropic's
+On a claude.ai conversation page, click the extension's icon in the
+browser toolbar to open a menu of the thirteen formats. A floating
+**Save to file** button in the bottom-right corner of the page opens
+the same menu; it can be turned off with the checkbox at the bottom
+of the toolbar menu. Choosing one fetches the conversation from Anthropic's
 own conversation API, builds the file, and downloads it — or, for
 the PDF formats, opens a print-optimised document and the print
 dialog.
@@ -31,8 +33,10 @@ this repository.
    directory itself, not `manifest.json` and not the repository
    root.
 6. The extension card appears, listing one host permission for
-   `claude.ai`. Open or reload a claude.ai conversation and the
-   **Save to file** button appears in the bottom-right corner.
+   `claude.ai`. Open or reload a claude.ai conversation, then click
+   the extension's toolbar icon (pin it from the puzzle-piece menu
+   to keep it visible) or the **Save to file** button in the
+   bottom-right corner of the page.
 
 To pick up changes to the source, press **Reload** on the
 extension card, then reload the claude.ai tab.
@@ -45,7 +49,7 @@ and no signing.
 
 ## Formats
 
-Eleven entries, each mirroring one console script:
+Thirteen entries, each mirroring one console script:
 
 | Menu entry | Script it mirrors | Output |
 |---|---|---|
@@ -60,6 +64,8 @@ Eleven entries, each mirroring one console script:
 | PDF — serif (clean) | `export-pdf-clean-serif.js` | Print dialog |
 | PDF — sans-serif | `export-pdf-sans.js` | Print dialog |
 | PDF — sans-serif (clean) | `export-pdf-clean-sans.js` | Print dialog |
+| Word | `export-docx.js` | `.docx` download |
+| Word (clean) | `export-docx-clean.js` | `-clean.docx` download |
 
 JSON has no clean variant — structured data is always complete by
 nature. Downloaded files are named after the conversation title,
@@ -78,8 +84,8 @@ the menu. It opens nothing and navigates nowhere.
 that produces different output for the same conversation has a
 bug.
 
-Output was verified rather than assumed. Every one of the eleven
-formats was compared byte for byte against the matching console
+Output was verified rather than assumed. Every one of the original
+eleven formats was compared byte for byte against the matching console
 script over synthetic fixtures covering multiple turns, timestamps,
 attachments, images, tool use, tool results, thinking blocks,
 unknown content block types, unicode, an empty conversation and a
@@ -87,6 +93,14 @@ single-message conversation — including the derived filename and
 the wording of every refusal. The download produced by the button
 in a real browser was compared against the output of the same
 console script run on the same page.
+
+The two Word entries were added later. Their output was compared
+byte for byte against `export-docx.js` and `export-docx-clean.js`
+over a synthetic fixture covering the same block types plus
+Markdown formatting, links, lists, quotes, code and both table
+layouts, and repeated exports were checked to carry no state from
+one file to the next. They have not yet been checked in a real
+browser.
 
 The seven text formatters are byte-identical source to the
 functions in the console scripts. The four PDF documents are built
@@ -99,17 +113,24 @@ that tab and allows only the document's own stylesheet, so the tab
 stays inert even if escaping ever regressed, whatever headers
 claude.ai itself sends.
 
+The Word formatter, `lib/format-docx.js`, is generated. It and the
+two Word console scripts are all built from `tools/docx/template.js`
+by `node tools/docx/build.mjs`; the extension gets the template's
+document builder wrapped in `createBuilder(clean)`, so its source is
+not byte-identical to the console scripts but its output is. Edit
+the template, never the generated files. `node tools/docx/build.mjs
+--check` fails if any of the three has drifted from the template.
+
 ---
 
 ## Permissions
 
-The extension requests one thing.
+The extension requests two things.
 
 | Requested | Why |
 |---|---|
 | `host_permissions: https://claude.ai/*` | The only site the extension runs on. It is the origin of the content script, the origin of the single API request, and what lets the toolbar popup tell whether the current tab is a conversation page. |
-
-`"permissions": []`. Nothing else is requested.
+| `storage` | Remembers one setting: whether the floating button is shown. Nothing else is stored, and Chrome shows no install warning for this permission. |
 
 `browser-extensions/README.md` proposed `activeTab`, `cookies`,
 `scripting` and the host permission. The three that are not
@@ -123,13 +144,29 @@ works without them:
 | `cookies` | `lastActiveOrg` is not `HttpOnly`, so the content script reads it from `document.cookie` on claude.ai. The `cookies` permission is only needed for `HttpOnly` cookies or reads from outside the page. |
 | `downloads` | The file is delivered with a Blob object URL and a temporary anchor carrying the `download` attribute, which is what the console scripts do. No download API is used. |
 | `tabs` | The popup reads the active tab's URL, which is granted by the claude.ai host permission alone for tabs the extension may already access. |
-| `storage` | Nothing is stored. There are no settings and no state between exports. |
 
 The extension also declares no `web_accessible_resources`. Icons
 in the injected interface are inlined as SVG strings, so no page
 can fingerprint the extension by probing for its files.
 
 ---
+
+## The toolbar menu
+
+The toolbar menu lists the same thirteen formats and the same
+descriptions as the floating button. Choosing one runs the export on
+the claude.ai page, exactly as the floating button does, and the
+menu shows the result. The checkbox at the bottom shows or hides the
+floating button; the change applies straight away to open tabs.
+
+A PDF started from the toolbar menu opens the extension's own print
+page (`print/print.html`) instead of a tab opened by the page,
+because the browser only lets the page open a tab in response to a
+click on the page itself. The content script keeps the finished
+print document in memory under a one-time random token, the print
+page collects it once, shows it, and opens the print dialog. The
+document is the same one the floating button prints, including
+the same Content-Security-Policy `<meta>`.
 
 ## PDF formats and the print dialog
 
@@ -220,8 +257,9 @@ No data leaves the device.
 - Session cookies attach to that request because it is made from
   the claude.ai page itself, exactly as they do for the page. No
   credential is read, stored or transmitted anywhere else.
-- Nothing is stored. No `chrome.storage`, no settings, no history
-  of exports.
+- One setting is stored, in `chrome.storage.local`: whether the
+  floating button is shown. No conversation content, no history of
+  exports, nothing else.
 - The conversation is turned into a file in the page and handed to
   the browser's own download, or written into a local print tab.
 - Everything injected into the page is removed when the button is
@@ -245,6 +283,7 @@ browser-extensions/chromium/
     format-html.js
     format-json.js
     format-pdf.js        both typefaces, full and clean
+    format-docx.js       Word (.docx), full and clean
     deliver.js           Blob download, print tab
   ui/
     styles.js            stylesheet as a string
@@ -252,8 +291,11 @@ browser-extensions/chromium/
     menu.js              format picker
   icons/                 copied from assets/png/
   popup/
-    popup.html
+    popup.html           toolbar menu and the floating-button setting
     popup.js
+  print/
+    print.html           print page for PDFs started from the toolbar menu
+    print.js
 ```
 
 Content scripts are classic scripts, listed in the manifest in
